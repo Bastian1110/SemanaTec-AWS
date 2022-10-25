@@ -1,8 +1,8 @@
 from flask import Flask, request, jsonify, render_template
-from fileinput import filename
 from werkzeug.utils import secure_filename
-import numpy as np
+from fileinput import filename
 from joblib import load
+import numpy as np
 import os
 
 servidorWeb = Flask(__name__)
@@ -21,6 +21,7 @@ def modeloForm():
 def modeloFile():
     f = request.files['file']
     filename = secure_filename(f.filename)
+    print(filename)
     path = os.path.join(os.getcwd(), 'files', filename)
     f.save(path)
     file = open(path, 'r')
