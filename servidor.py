@@ -21,12 +21,9 @@ def modeloForm():
 def modeloFile():
     f = request.files['file']
     filename = secure_filename(f.filename)
-
     if not os.path.exists('files'):
          os.makedirs('files')
-
-
-    path = os.path.join(os.getcwd(), filename)
+    path = os.path.join(os.getcwd(), 'files', filename)
     f.save(path)
     file = open(path, 'r')
     for line in file:
