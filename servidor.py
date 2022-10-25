@@ -1,9 +1,13 @@
+
 from flask import Flask, request, jsonify, render_template
 from werkzeug.utils import secure_filename
 from fileinput import filename
 from joblib import load
 import numpy as np
 import os
+
+#Cargar el modelo
+dt = load('modelo.jotlib')
 
 servidorWeb = Flask(__name__)
 
@@ -14,8 +18,14 @@ def formulario():
 @servidorWeb.route('/modeloIA', methods=['POST'])
 def modeloForm():
     contenido = request.form
-    print(contenido)
-    return jsonify({"Resultado" : "Datos recibidos"})
+    datosEntrada = np.array([
+         7.7000,0.5600, 0.0800, 2.5000, 0.1140,14.0000,46.0000, 0.9971,
+         contenido['pH'],
+         contenido["sulfatos"],
+         contenido["alcohol"]
+    ])
+    resultado = dt.predict(datosEntrada.reshape(1,-1))
+    return jsonify({"Resultado" : str(resultado[0])})
 
 @servidorWeb.route('/modeloFile', methods=['POST'])
 def modeloFile():
