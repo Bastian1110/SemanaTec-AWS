@@ -36,9 +36,16 @@ def modeloFile():
     path = os.path.join(os.getcwd(), 'files', filename)
     f.save(path)
     file = open(path, 'r')
+    datosEntrada = []
     for line in file:
         print(line)
-    return jsonify({"Resultado" : "Datos recibidos"})
+        values = line.split(',')
+        for i in values:
+            if i != "\n":
+                datosEntrada.append(int(i))
+    datosEntrada = np.array(datosEntrada)
+    resultado = dt.predict(datosEntrada.reshape(1,-1))
+    return jsonify({"Resultado" : str(resultado[0])})
 
 if __name__ == "__main__":
     servidorWeb.run(debug=False, host='0.0.0.0', port='8080')
